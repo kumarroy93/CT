@@ -1,0 +1,61 @@
+{
+  "name": "Verifying the searching for flight functinality",
+  "status": "passed",
+  "statusDetails": {
+    "known": false,
+    "muted": false,
+    "flaky": false
+  },
+  "stage": "finished",
+  "steps": [],
+  "attachments": [],
+  "parameters": [],
+  "start": 1590403021449,
+  "stop": 1590403054147,
+  "uuid": "337ce7ad-ddc7-477e-88ca-ee3fa6c70ce0",
+  "historyId": "62409e3989a86b9ca0382a0c74734b04",
+  "fullName": "com.qa.plivo.testpages.SearchPageTest.testThatResultsAppearForAReturnJourney",
+  "labels": [
+    {
+      "name": "package",
+      "value": "com.qa.plivo.testpages.SearchPageTest"
+    },
+    {
+      "name": "testClass",
+      "value": "com.qa.plivo.testpages.SearchPageTest"
+    },
+    {
+      "name": "testMethod",
+      "value": "testThatResultsAppearForAReturnJourney"
+    },
+    {
+      "name": "parentSuite",
+      "value": "Default Suite"
+    },
+    {
+      "name": "suite",
+      "value": "Plivo"
+    },
+    {
+      "name": "subSuite",
+      "value": "com.qa.plivo.testpages.SearchPageTest"
+    },
+    {
+      "name": "host",
+      "value": "Praveens-MacBook-Pro.local"
+    },
+    {
+      "name": "thread",
+      "value": "9890@Praveens-MacBook-Pro.local.main(1)"
+    },
+    {
+      "name": "framework",
+      "value": "testng"
+    },
+    {
+      "name": "language",
+      "value": "java"
+    }
+  ],
+  "links": []
+}
