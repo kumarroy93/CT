@@ -3,6 +3,7 @@ package com.qa.plivo.pages;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.qa.plivo.base.BasePage;
+import com.qa.plivo.constants.Constants;
 import org.apache.commons.mail.EmailException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -277,9 +278,12 @@ public class BookingPage extends BasePage {
         test.log(Status.INFO,"Total Air Expenses for Raj is" +airExpense);
 
 
-        int TotalExpenses= cabExpense+ giftExpense+ foodExpense+misExpense+airExpense;
+        int TotalExpenses= cabExpense+ giftExpense+ foodExpense+ misExpense+ airExpense;
+        String Total_Expenses= String.valueOf(TotalExpenses);
 
         test.log(Status.INFO, "TOTAL OF ALL THE EXPENSE INCURRED BY RAJ ARE "+ TotalExpenses);
+
+        writeIntoCSV(Constants.RESULTDATA_PATH, cabExpenses, giftExpenses, foodExpenses, misExpenses, air_Fare, Total_Expenses);
 
 
     }

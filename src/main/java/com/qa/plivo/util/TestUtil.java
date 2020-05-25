@@ -1,5 +1,6 @@
 package com.qa.plivo.util;
 
+import com.opencsv.CSVWriter;
 import com.qa.plivo.base.BasePage;
 import com.qa.plivo.constants.Constants;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -15,10 +16,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -79,7 +79,7 @@ public class TestUtil extends BasePage {
     public static Object[][] getTestData(String sheetName) {
         FileInputStream file = null;
         try {
-            file = new FileInputStream(Constants.TESTDATA_SHEET_PATH);
+            file = new FileInputStream("");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -152,6 +152,28 @@ public class TestUtil extends BasePage {
     }
 
 
+    public static void writeIntoCSV(String filePath, String cab, String gift, String food, String mis, String air){
+        File file = new File(filePath);
+
+        try {
+            FileWriter outputfile = new FileWriter(file);
+
+            CSVWriter writer = new CSVWriter(outputfile, '|',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            List<String[]> data = new ArrayList<String[]>();
+            data.add(new String[] { "Cab Expenses", "Gift Expenses", "Food Expenses" , "Miscellaneous Expenses "," Air Fare"});
+            data.add(new String[] { cab, gift, food ,mis, air});
+            writer.writeAll(data);
+
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

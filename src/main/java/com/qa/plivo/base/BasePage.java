@@ -9,6 +9,7 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.opencsv.CSVWriter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.mail.EmailException;
@@ -28,15 +29,10 @@ import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -95,7 +91,9 @@ public class BasePage {
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
         tdriver.set(driver);
+
         return getDriver();
+
 
 
     }
@@ -404,6 +402,40 @@ public class BasePage {
             }
         } catch (Exception e) {
             failedLogStatus("Unable to click on edit icon ");
+        }
+    }
+
+    /**
+     * This is a utility function to write into the CSV file
+     * @param filePath
+     * @param cabFare
+     * @param giftFare
+     * @param foodFare
+     * @param misFare
+     * @param airFare
+     */
+
+    public static void writeIntoCSV(String filePath, String cabFare, String giftFare, String foodFare, String misFare, String airFare, String totalFare){
+        File file = new File(filePath);
+
+        try {
+            FileWriter outputfile = new FileWriter(file);
+
+            CSVWriter writer = new CSVWriter(outputfile, '|',
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            List<String[]> data = new ArrayList<String[]>();
+            data.add(new String[] { "Cab Expenses", "Gift Expenses", "Food Expenses" , "Miscellaneous Expenses "," Air Fare", " Total Expenses"});
+            data.add(new String[] { cabFare, giftFare, foodFare ,misFare, airFare,totalFare});
+            writer.writeAll(data);
+
+
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

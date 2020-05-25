@@ -3,7 +3,7 @@ package com.qa.plivo.constants;
 public class Constants {
 
 
-    public final static String TESTDATA_SHEET_PATH = "";
+    public final static String RESULTDATA_PATH = System.getProperty("user.dir")+"//Expenses.csv";
 
     public static final int SHORT_WAIT = 3000;
     public static final int MEDIUM_WAIT = 6000;
