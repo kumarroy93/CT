@@ -37,9 +37,8 @@ For Test Report I have generator 2 reports excluding the auto-generated report o
 
 Extent Report
 Allure Report
-Also written a code for recording the test cases that can be utilize for checking all the stetps followed.
 
-Also generated a log file consisting all the steps the test case have navigated to.
+Created a csv file to write all the expenses.
 
 SET UP THE PROJECT
 
@@ -62,5 +61,9 @@ $ allure generate allure-results
 To view allure report
 
 $ allure serve allure-results
+
+To run all the test at a time use
+
+$ mvn test
 
 
