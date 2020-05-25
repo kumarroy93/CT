@@ -1,7 +1,9 @@
 package com.qa.plivo.pages;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.qa.plivo.base.BasePage;
+import org.apache.commons.mail.EmailException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -11,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
 import java.util.Properties;
 
 public class BookingPage extends BasePage {
@@ -19,11 +22,11 @@ public class BookingPage extends BasePage {
   //  public Properties prop;
     public BasePage basePage;
 
-    public String total_Fare;
+    public String air_Fare;
 
 
 
-    @FindBy(xpath="(//*[@value='Continue to payment'])[1]")
+    @FindBy(id="itineraryBtn")
     private WebElement BookingPageDisplayIdentifier;
 
     @FindBy(id="itineraryBtn")
@@ -85,7 +88,7 @@ public class BookingPage extends BasePage {
     }
 
     public void identifierOfBookingPage() {
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(BookingPageDisplayIdentifier));
             if (BookingPageDisplayIdentifier.isDisplayed()) {
@@ -97,12 +100,11 @@ public class BookingPage extends BasePage {
     }
 
     public void clickOnContinueToPaymentButton() {
-        Actions action = new Actions(driver);
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(continueToPaymentBtn));
             if (continueToPaymentBtn.isDisplayed()) {
-                action.click(continueToPaymentBtn).build().perform();
+                continueToPaymentBtn.click();
                 System.out.println("Clicked on continue to payment button and moving to next step");
 
             }
@@ -111,22 +113,22 @@ public class BookingPage extends BasePage {
         }
     }
 
-    public void fillTravellerEmailAddress() {
-        wait = new WebDriverWait(driver, 15);
+    public void fillTravellerEmailAddress() throws IOException, EmailException {
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(emailAddress));
             if (emailAddress.isDisplayed()) {
                 emailAddress.clear();
                 emailAddress.sendKeys(prop.getProperty("emailAddress"));
-                waitForVisibility(continueBtnOnEmailPage,"Continue button");
-                click(continueBtnOnEmailPage, "Continue button");
-                System.out.println("Filled the mobile number and moving to next step");
-                test.pass("Filled the mobile number", MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
-
+                wait.until(ExpectedConditions.visibilityOf(continueBtnOnEmailPage));
+                continueBtnOnEmailPage.click();
+                System.out.println("Filled the Email Address and moving to next step");
+                test.pass("Filled the Email Address", MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
     }
 
 
@@ -140,12 +142,12 @@ public class BookingPage extends BasePage {
      * @param element
      */
     public void fillTravellerTitle(WebElement element) {
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(element));
             if (element.isDisplayed()) {
                 selectClass(element);
-                System.out.println("Filled the Adult title and moving to next step");
+                System.out.println("Filled the title and moving to next step");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -160,12 +162,14 @@ public class BookingPage extends BasePage {
      */
 
     public void fillTravellerDetails(WebElement firstName, WebElement lastName, String adultFirstName, String adultLastName){
+        wait = new WebDriverWait(driver, 30);
+
         try {
             wait.until(ExpectedConditions.visibilityOf(firstName));
             if (firstName.isDisplayed()) {
                 firstName.clear();
                 firstName.sendKeys(adultFirstName);
-                System.out.println("Filled the Adult first name and moving to next step");
+                System.out.println("Filled the Traveller first name and moving to next step");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -176,7 +180,7 @@ public class BookingPage extends BasePage {
             if (lastName.isDisplayed()) {
                 lastName.clear();
                 lastName.sendKeys(adultLastName);
-                System.out.println("Filled the Adult last name and moving to next step");
+                System.out.println("Filled the Traveller last name and moving to next step");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -186,7 +190,7 @@ public class BookingPage extends BasePage {
     }
 
     public void fillChildDOBDetail(WebElement dobDayAndMonth) {
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(dobDayAndMonth));
             if (dobDayAndMonth.isDisplayed()) {
@@ -199,7 +203,7 @@ public class BookingPage extends BasePage {
     }
 
     public void fillChildDOBDetail() {
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(getChildDOBYear));
             if (getChildDOBYear.isDisplayed()) {
@@ -214,7 +218,7 @@ public class BookingPage extends BasePage {
 
 
     public void fillMobileNumber() {
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(mobileNumber));
             if (mobileNumber.isDisplayed()) {
@@ -228,7 +232,7 @@ public class BookingPage extends BasePage {
     }
 
     public void clickOnPaymentButton() {
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         try {
             wait.until(ExpectedConditions.visibilityOf(paymentBtn));
             if (paymentBtn.isDisplayed()) {
@@ -241,10 +245,43 @@ public class BookingPage extends BasePage {
     }
 
     public void getTotalFare(){
-        wait = new WebDriverWait(driver, 15);
+        wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.visibilityOf(totalFare));
-        total_Fare= totalFare.getText().replace(",","");
-        System.out.println(total_Fare);
+        air_Fare= totalFare.getText().replace(",","");
+        System.out.println(air_Fare);
+    }
+
+    /**
+     * This method is to find the total expenses in the two way journey
+     * @throws Exception
+     */
+    public void totalExpensesForTwoWayJourney() throws Exception {
+
+        String cabExpenses= prop.getProperty("cabFare");
+        String giftExpenses= prop.getProperty("giftExpenses");
+        String foodExpenses= prop.getProperty("foodExpenses");
+        String misExpenses= prop.getProperty("misExpenses");
+
+        int cabExpense= Integer.parseInt(cabExpenses);
+        test.log(Status.INFO,"Total Cab Expenses for Raj is " + cabExpense);
+        int giftExpense= Integer.parseInt(giftExpenses);
+        test.log(Status.INFO,"Total Gift Expenses for Raj is " +giftExpense);
+
+        int foodExpense= Integer.parseInt(foodExpenses);
+        test.log(Status.INFO,"Total Food Expenses for Raj is " +foodExpense);
+
+        int misExpense= Integer.parseInt(misExpenses);
+        test.log(Status.INFO,"Total Miscellaneous Expenses for Raj is " +misExpense);
+
+        int airExpense= Integer.parseInt(air_Fare);
+        test.log(Status.INFO,"Total Air Expenses for Raj is" +airExpense);
+
+
+        int TotalExpenses= cabExpense+ giftExpense+ foodExpense+misExpense+airExpense;
+
+        test.log(Status.INFO, "TOTAL OF ALL THE EXPENSE INCURRED BY RAJ ARE "+ TotalExpenses);
+
+
     }
 
 
@@ -254,7 +291,7 @@ public class BookingPage extends BasePage {
      *
      */
 
-    public void bookingPageDetails() throws InterruptedException {
+    public void bookingPageDetails() throws InterruptedException, IOException, EmailException {
         identifierOfBookingPage();
         clickOnContinueToPaymentButton();
         fillTravellerEmailAddress();

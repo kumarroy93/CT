@@ -24,7 +24,7 @@
                 <version>3.0.0-M3</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testrunner/testng_sanity.xml</suiteXmlFile>
+                        <suiteXmlFile>src/main/resources/testng.xml</suiteXmlFile>
 
 
                     </suiteXmlFiles>

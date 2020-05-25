@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+
+<suite name="Clear Trip Booking Suite" verbose="3" parallel="tests" thread-count="2" preserve-order="true">
+
+
+    <listeners>
+
+        <listener
+                class-name="com.qa.plivo.listener.ExtentReportListener" />
+
+
+    </listeners>
+
+    <test name="Booking Test">
+
+        <classes>
+            <class name="com.qa.plivo.testpages.BookingTwoWayFlightsTest" />
+
+        </classes>
+    </test>
+</suite>
