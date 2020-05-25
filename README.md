@@ -62,3 +62,5 @@ $ allure generate allure-results
 To view allure report
 
 $ allure serve allure-results
+
+# Note: Due to unavailablity of spreedsheet the total expenses have been displayed in the extent report, also the utility to read and write have been written in the util package.
