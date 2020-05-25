@@ -6,10 +6,7 @@ import com.qa.plivo.base.BasePage;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +42,9 @@ public class FlightsSearchPage extends BasePage {
     @FindBy(id = "ui-id-2")
     private WebElement destinationAuto;
 
+    @FindBy(id = "Childrens")
+    private WebElement childern;
+
 
     public FlightsSearchPage(WebDriver driver) {
         BasePage.driver = driver;
@@ -54,47 +54,78 @@ public class FlightsSearchPage extends BasePage {
 
     public void enterDepartureDateAs(String date) {
         wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(departureDateField));
-        departureDateField.clear();
-        departureDateField.sendKeys(date);
-        System.out.println("Selected the departure date and moving to next step");
+        try {
+            wait.until(ExpectedConditions.visibilityOf(departureDateField));
+            if (departureDateField.isDisplayed()) {
+                departureDateField.clear();
+                departureDateField.sendKeys(date);
+                System.out.println("Selected the departure date and moving to next step");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void enterReturnDateAs(String date) {
         wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(returnDateField));
-        returnDateField.clear();
-        returnDateField.sendKeys(date, Keys.TAB);
-        System.out.println("Selected the origin date and moving to next step");
+        try {
+            wait.until(ExpectedConditions.visibilityOf(returnDateField));
+            if (returnDateField.isDisplayed()) {
+                returnDateField.clear();
+                returnDateField.sendKeys(date, Keys.TAB);
+                System.out.println("Selected the origin date and moving to next step");
 
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
     public void enterDestinationAs(String destination) {
         wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(destinationField));
-        destinationField.clear();
-        destinationField.sendKeys(destination);
-        System.out.println("Filled the destination and moving to next step");
+        try {
+            wait.until(ExpectedConditions.visibilityOf(destinationField));
+            if (destinationField.isDisplayed()) {
+                destinationField.clear();
+                destinationField.sendKeys(destination);
+                System.out.println("Filled the destination and moving to next step");
 
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
     public void enterOriginAs(String origin) {
         wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(originField));
-        originField.clear();
-        originField.sendKeys(origin);
-        System.out.println("Filled the origin and moving to next step");
+        try {
+            wait.until(ExpectedConditions.visibilityOf(originField));
+            if (originField.isDisplayed()) {
+                originField.clear();
+                originField.sendKeys(origin);
+                System.out.println("Filled the origin and moving to next step");
 
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 
 
     public void chooseToHaveAReturnJourney() {
 
         WebDriverWait wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(returnTripJourneySelection));
-        returnTripJourneySelection.click();
+
+        try {
+            wait.until(ExpectedConditions.visibilityOf(returnTripJourneySelection));
+            if (returnTripJourneySelection.isDisplayed()) {
+                returnTripJourneySelection.click();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -118,16 +149,26 @@ public class FlightsSearchPage extends BasePage {
         originOptions.get(0).click();
     }
 
-    public void searchForTheJourney() {
+    public void noOfChildren(WebElement childern) {
+        wait = new WebDriverWait(driver, 15);
+        wait.until(ExpectedConditions.visibilityOf(childern));
+        Select select = new Select(childern);
+        select.selectByIndex(1);
+        System.out.println("Selected number of childern as 1 and moving to next step");
+
+    }
+
+
+    public SearchResultsPage searchForTheJourney() {
         wait = new WebDriverWait(driver, 15);
         wait.until(ExpectedConditions.visibilityOf(searchButton));
         searchButton.click();
         System.out.println("Clicked on search button and waiting for the search result");
+        return new SearchResultsPage(driver);
     }
 
 
-    public void searchForAReturnJourneyWith(String origin, String destination) throws InterruptedException {
-        //  wait= new WebDriverWait(driver,15);
+    public SearchResultsPage searchForAReturnJourneyWith(String origin, String destination) throws InterruptedException {
         chooseToHaveAReturnJourney();
 
         enterOriginAs(origin);
@@ -138,7 +179,10 @@ public class FlightsSearchPage extends BasePage {
 
         enterDepartureDateAs(after60Days());
         enterReturnDateAs(after61Days());
-        searchForTheJourney();
+
+        noOfChildren(childern);
+        SearchResultsPage searchResultsPage = this.searchForTheJourney();
+        return searchResultsPage;
     }
 
 

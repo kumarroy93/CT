@@ -1,17 +1,14 @@
 package com.qa.plivo.pages;
 
-import com.google.common.base.Function;
 import com.qa.plivo.base.BasePage;
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class SearchResultsPage extends BasePage {
@@ -19,29 +16,17 @@ public class SearchResultsPage extends BasePage {
     public WebDriverWait wait;
 
 
-    @FindBy(xpath = "//*[text()='Round trip']")
-    private WebElement returnTripJourneySelection;
+    @FindAll({
+            @FindBy(xpath = "(//*[@class='totalAmount'])[6]"),
+            @FindBy(xpath = "//form[@id='flightForm']/section[2]/div[3]/div/h2")
+    })
+    private WebElement searchResultDisplayedIdentifier;
 
-    @FindBy(id = "DepartDate")
-    private WebElement departureDateField;
+    @FindBy(xpath = "(//a[contains(text(),'Depart')])[2]")
+    private WebElement returnDepartureBtn;
 
-    @FindBy(id = "ReturnDate")
-    private WebElement returnDateField;
-
-    @FindBy(id = "FromTag")
-    private WebElement originField;
-
-    @FindBy(id = "ToTag")
-    private WebElement destinationField;
-
-    @FindBy(id = "SearchBtn")
-    private WebElement searchButton;
-
-    @FindBy(id = "ui-id-1")
-    private WebElement originAuto;
-
-    @FindBy(id = "ui-id-2")
-    private WebElement destinationAuto;
+    @FindBy(xpath = "(//button[@type='submit'])[4]")
+    private WebElement bookBtn;
 
 
     public SearchResultsPage(WebDriver driver) {
@@ -50,82 +35,55 @@ public class SearchResultsPage extends BasePage {
     }
 
 
-    public void enterDepartureDateAs(String date) {
+    public void identifier() {
         wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(departureDateField));
-        departureDateField.clear();
-        departureDateField.sendKeys(date);
-        System.out.println("Selected the departure date and moving to next step");
-    }
-
-    public void enterReturnDateAs(String date) {
-        wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(returnDateField));
-        returnDateField.clear();
-        returnDateField.sendKeys(date, Keys.TAB);
-        System.out.println("Selected the origin date and moving to next step");
-
-    }
-
-
-    public void enterDestinationAs(String destination) {
-        wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(destinationField));
-        destinationField.clear();
-        destinationField.sendKeys(destination);
-        System.out.println("Filled the destination and moving to next step");
-
-    }
-
-
-    public void enterOriginAs(String origin) {
-        wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(originField));
-        originField.clear();
-        originField.sendKeys(origin);
-        System.out.println("Filled the origin and moving to next step");
-
-    }
-
-
-    public void chooseToHaveAReturnJourney() {
-
-        WebDriverWait wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(returnTripJourneySelection));
-        returnTripJourneySelection.click();
-
-    }
-
-
-    public void selectTheFirstAvailableAutoCompleteOption(WebElement locator) throws InterruptedException {
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(30, TimeUnit.SECONDS)
-                .pollingEvery(1, TimeUnit.SECONDS)
-                .ignoring(NoSuchElementException.class);
-
-        WebElement optionListElement = wait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return locator;
+        try {
+            wait.until(ExpectedConditions.visibilityOf(searchResultDisplayedIdentifier));
+            if (searchResultDisplayedIdentifier.isDisplayed()) {
+                System.out.println("We are on the search result page and moving to next step");
             }
-        });
-
-        //select the first item from the auto complete list
-        WebElement originOptionsElement = optionListElement;
-        Thread.sleep(5000);
-        List<WebElement> originOptions = originOptionsElement.findElements(By.tagName("li"));
-        originOptions.get(0).click();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void searchForTheJourney() {
+    public void sortReturnDepartureByLast() {
+        Actions action = new Actions(driver);
         wait = new WebDriverWait(driver, 15);
-        wait.until(ExpectedConditions.visibilityOf(searchButton));
-        searchButton.click();
-        System.out.println("Clicked on search button and waiting for the search result");
+        try {
+            wait.until(ExpectedConditions.visibilityOf(returnDepartureBtn));
+            if (returnDepartureBtn.isDisplayed()) {
+                action.doubleClick(returnDepartureBtn).build().perform();
+                System.out.println("Clicked on return departure to sort in descending order and moving to next step");
+
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    public BookingPage goToBooking() {
+        wait = new WebDriverWait(driver, 15);
+        try {
+            wait.until(ExpectedConditions.visibilityOf(bookBtn));
+            if (bookBtn.isDisplayed()) {
+                bookBtn.click();
+                System.out.println("Clicked on search button and waiting for the booking page ");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return new BookingPage(driver);
 
-    public void searchForAReturnJourneyWith(String origin, String destination) throws InterruptedException {
+    }
 
+    public BookingPage selectTheFlights() throws InterruptedException {
+
+        identifier();
+        sortReturnDepartureByLast();
+
+        BookingPage bookingPage = this.goToBooking();
+        return bookingPage;
     }
 
 
