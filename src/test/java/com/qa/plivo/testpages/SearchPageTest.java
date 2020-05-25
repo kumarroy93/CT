@@ -2,6 +2,7 @@ package com.qa.plivo.testpages;
 
 import com.qa.plivo.base.BasePage;
 import com.qa.plivo.listner.ExtentReportListener;
+import com.qa.plivo.pages.BookingPage;
 import com.qa.plivo.pages.FlightsSearchPage;
 import com.qa.plivo.pages.SearchResultsPage;
 import org.apache.log4j.LogManager;
@@ -25,6 +26,7 @@ public class SearchPageTest extends BasePage {
     public Properties prop;
     public FlightsSearchPage flightsSearchPage;
     public SearchResultsPage searchresultTest;
+    public BookingPage bookingPage;
 
 
     @BeforeClass // this method will be executed before every @test method
@@ -35,6 +37,7 @@ public class SearchPageTest extends BasePage {
         driver.get(prop.getProperty("url"));
         flightsSearchPage = new FlightsSearchPage(driver);
         searchresultTest = new SearchResultsPage(driver);
+        bookingPage= new BookingPage(driver);
 
 
     }
@@ -45,6 +48,7 @@ public class SearchPageTest extends BasePage {
 
         flightsSearchPage.searchForAReturnJourneyWith(prop.getProperty("origin"), prop.getProperty("destination"));
         searchresultTest.selectTheFlights();
+        bookingPage.bookingPageDetails();
 
 
     }

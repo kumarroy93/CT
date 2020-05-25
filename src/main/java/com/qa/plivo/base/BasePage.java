@@ -331,6 +331,8 @@ public class BasePage {
     }
 
 
+
+
     // This is a generic method for waiting for an elelment to be visible
 
     public void waitForVisibility(WebElement locator, String element) throws IOException, EmailException {

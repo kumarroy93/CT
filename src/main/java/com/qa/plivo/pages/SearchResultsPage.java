@@ -35,7 +35,7 @@ public class SearchResultsPage extends BasePage {
     }
 
 
-    public void identifier() {
+    public void identifierOfSearchResultPage() {
         wait = new WebDriverWait(driver, 15);
         try {
             wait.until(ExpectedConditions.visibilityOf(searchResultDisplayedIdentifier));
@@ -79,7 +79,7 @@ public class SearchResultsPage extends BasePage {
 
     public BookingPage selectTheFlights() throws InterruptedException {
 
-        identifier();
+        identifierOfSearchResultPage();
         sortReturnDepartureByLast();
 
         BookingPage bookingPage = this.goToBooking();
